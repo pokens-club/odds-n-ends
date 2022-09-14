@@ -9,6 +9,7 @@ import "./ERC721A.sol";
 // This contract is an example of how to create an ERC721A NFT with on-chain SVG data.
 // Works with all standard tokenURI metadata implementations, no IPFS or third party needed.
 // Created within the context of generating on-chain random "decks" of playing cards or champions.
+// Check out the final card examples here: https://testnets.opensea.io/collection/the-game-champion-v4
 // Developed by ho-oh.eth
 
 contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
