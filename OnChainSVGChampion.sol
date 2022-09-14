@@ -6,8 +6,9 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ERC721A.sol";
 
-// This contract is an example of how to create on-chain "playing cards" or "champions".
-// Created within the context of storing project details on-chain for a web3 project management system.
+// This contract is an example of how to create an ERC721A NFT with on-chain SVG data.
+// Works with all standard tokenURI metadata implementations, no IPFS or third party needed.
+// Created within the context of generating on-chain random "decks" of playing cards or champions.
 // Developed by ho-oh.eth
 
 contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
