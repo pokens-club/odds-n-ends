@@ -6,6 +6,10 @@ import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/security/ReentrancyGuard.sol";
 import "./ERC721A.sol";
 
+// This contract is an example of how to create on-chain "playing cards" or "champions".
+// Created within the context of storing project details on-chain for a web3 project management system.
+// Developed by ho-oh.eth
+
 contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
 
     constructor() ERC721A("THE GAME CHAMPION", "CHAMPION") Ownable() {}
@@ -33,7 +37,9 @@ contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
         uint256 spirit;
     }
 
-    // Champion creation (generate psudorandom champion w/ on-chain stats)
+    // Champion creation mint function (generate psudorandom champion w/ on-chain stats)
+    // Can mint multiple at once because of ERC721A, just change "cardsPerPack" above
+
     function mintDeck() public mintCheck() {
         for (uint256 i = 0; i < cardsPerPack; i++) {
             string memory _class = _getClass(_rand(3));
@@ -64,19 +70,23 @@ contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
         ++totalCardsMinted;
     }
 
-    // Metadata creation
+    // Metadata creation functions (used to generate random stats for each playing card / champion)
+
+    // Classes available for each card
     function _getClass(uint256 index) internal pure returns (string memory) {
         string[3] memory _classList = ["Warrior", "Mage", "Healer"];
         // string[7] memory _classList = ["Warrior", "Mage", "Cleric", "Rogue", "Druid", "Paladin", "Hunter"];
         return _classList[index];
     }
 
+    // Names available for each card
     function _getName(uint256 index, uint256 index2) internal pure returns (string memory) {
         string[17] memory firstName = ["Johnny", "Jane", "Willow", "Chase", "Becky", "Archie", "Clark", "Bruce", "Kim", "Cole", "Luke", "Johan", "Timothy", "Charlie", "Scout", "Elizabeth", "Crystal"];
         string[18] memory lastName = ["Bane", "Lane", "Bite", "Song", "Roar", "Johnson", "Sky", "Glow", "Bender", "Shadow", "Whisper", "Shout", "Pearl", "Smith", "Peak", "Sanchez", "Sun", "Moon"];
         return string(abi.encodePacked(firstName[index], " ", lastName[index2]));
     }
 
+    // Stat boosts for each class
     function _getBoosts(string memory _class) internal pure returns (uint256[6] memory) {
 
         uint256 healthBoost;
@@ -173,6 +183,12 @@ contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
 
     // Inspired by @dom's implementation - MIT license
     // https://etherscan.io/address/0xff9c1b15b16263c61d017ee9f65c50e4ae0113d7#code
+    
+    // Chooses the corresponding svg emblem depending on the random class
+    // Generates svg of all stats and card information
+    // Compiles all svg parts into one final playing card
+    // Returns compiles SVG data as tokenURI (Compatable with all typical metadata implementations)
+    
     function tokenURI(uint256 tokenId) public view override returns (string memory) {
 
         string memory warriorSvg = '<path d="M426.619 494.929L414.714 548.5V372.905L420.667 461L439.119 423.5L467.69 372.905L479 329.452V397.31L449.833 443.143L426.619 494.929Z" fill="#0C0C0C"/> <path d="M439.119 416.357L422.452 451.476L418.286 374.69L449.833 358.024L462.333 316.357L422.452 333L390.905 356.833L392.69 421.714L379 434.214V195L388 220.5L414.714 249.5L446 271L479 286.595L477.214 319.333L471.857 346.714L463.524 372.905L454 387.19L439.119 416.357Z" fill="#0C0C0C"/> <path d="M323.381 494.929L335.286 555.5L338 467L335.286 372.905L329.333 461L310.881 423.5L282.31 372.905L271 329.452V397.31L300.167 443.143L323.381 494.929Z" fill="#0C0C0C"/> <path d="M310.881 416.357L327.548 451.476L329.333 372.905L300.167 358.024L287.667 316.357L327.548 333.5L359.095 356.833L357.31 421.714L371 434.214V198.5L362 220.5L335.286 249.5L304 271L271 286.595L272.786 319.333L278.143 346.714L286.476 372.905L296 387.19L310.881 416.357Z" fill="#0C0C0C"/>';
@@ -240,7 +256,6 @@ contract ChampionNft is ERC721A, Ownable, ReentrancyGuard {
     // Inspired by OraclizeAPI's implementation - MIT license
     // https://github.com/oraclize/ethereum-api/blob/b42146b063c7d6ee1358846c198246239e9360e8/oraclizeAPI_0.4.25.sol
     function toString(uint256 value) internal pure returns (string memory) {
-
         if (value == 0) {
             return "0";
         }
